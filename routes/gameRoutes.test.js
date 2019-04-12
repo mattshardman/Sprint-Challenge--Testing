@@ -1,6 +1,6 @@
 const request = require('supertest');
 const routes = require('../server/server');
-const games = require('../data');
+const { games } = require('../data');
 
 beforeEach(() => {
     games.length = 0;
@@ -58,6 +58,7 @@ describe('test endpoints', () => {
                 .expect(201)
                 .then((r) => {
                     expect(r.body.length).toBe(1);
+                    expect(r.body[0].id).toBe(2);
                 })
         });
 
