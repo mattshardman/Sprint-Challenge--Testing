@@ -5,6 +5,10 @@ routes.get('/', (req, res) => {
     res.status(200).send('working')
 });
 
+routes.get('/games', (req, res) => {
+    res.status(200).send('games')
+});
+
 routes.post('/games', (req, res) => {
     if (!req.body.title || !req.body.genre) {
         return res.status(422).json({ error: 'Title and genre fields are required' })
