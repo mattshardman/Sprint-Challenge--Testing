@@ -1,5 +1,5 @@
 const routes = require('express').Router();
-const { games } = require('../data');
+let { games } = require('../data');
 
 let id = 1;
 
@@ -41,10 +41,12 @@ routes.post('/games', (req, res) => {
     return res.status(201).json(games)
 });
 
-routes.delete('/games/:id', () => {
+routes.delete('/games/:id', (req, res) => {
     const { id } = req.params;
-    const newGamesArr = games.find((game) => game.id != id);
+    const newGamesArr = games.filter((game) => game.id != id);
+    if (games.length === newGamesArr.length) return res.status(404).json({ error: `Game with id ${id} not found` });
     games = newGamesArr;
+    res.status(201).json(games);
 });
 
 module.exports = routes;

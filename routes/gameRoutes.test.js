@@ -1,6 +1,6 @@
 const request = require('supertest');
 const routes = require('../server/server');
-const { games } = require('../data');
+let { games } = require('../data');
 
 beforeEach(() => {
     games.length = 0;
