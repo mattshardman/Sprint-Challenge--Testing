@@ -1,10 +1,10 @@
 const request = require('supertest');
 const routes = require('../server/server');
-let games = require('../data');
+const games = require('../data');
 
 beforeEach(() => {
-    games = [];
-});
+    games.length = 0;
+})
 
 describe('test endpoint', () => {
     it('returns a status code of 200', () => {
@@ -47,7 +47,7 @@ describe('test endpoints', () => {
                 .expect(201)
         });
 
-        it('games array has length of 2', () => {
+        it('games array has length of 1 after posting', () => {
             return request(routes)
                 .post('/games')
                 .send({
@@ -57,7 +57,7 @@ describe('test endpoints', () => {
                 })
                 .expect(201)
                 .then((r) => {
-                    expect(r.body.length).toBe(2);
+                    expect(r.body.length).toBe(1);
                 })
         });
     });
@@ -68,5 +68,30 @@ describe('test endpoints', () => {
                 .get('/games')
                 .expect(200);
         })
+
+        it('returns an empty array if no games are present', () => {
+            return request(routes)
+                .get('/games')
+                .expect([]);
+        });
+
+        it('returns an array of games', () => {
+            games.push({
+                title: 'Pacman', // required
+                genre: 'Arcade', // required
+                releaseYear: 1980 // not required
+            },
+            {
+                title: 'Pong', // required
+                genre: 'Arcade', // required
+                releaseYear: 1972 // not required
+            });
+
+            return request(routes)
+                .get('/games')
+                .then(r => {
+                    expect(r.body.length).toBe(2)
+                });
+        });
     });
 });

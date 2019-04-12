@@ -6,7 +6,7 @@ routes.get('/', (req, res) => {
 });
 
 routes.get('/games', (req, res) => {
-    res.status(200).send('games')
+    res.status(200).send(games)
 });
 
 routes.post('/games', (req, res) => {
