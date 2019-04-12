@@ -6,8 +6,12 @@ routes.get('/', (req, res) => {
 });
 
 routes.post('/games', (req, res) => {
+    if (!req.body.title || !req.body.genre) {
+        return res.status(422).json({ error: 'Title and genre fields are required' })
+    };
+
     games.push(req.body);
-    res.status(201).json(games)
+    return res.status(201).json(games)
 });
 
 module.exports = routes;
