@@ -20,6 +20,26 @@ describe('test endpoint', () => {
 
 describe('test endpoints', () => {
     describe('POST /games endpoint', () => {
+        it('returns a status code 422 if name field is missing', () => {
+            return request(routes)
+                .post('games')
+                .send({
+                    genre: 'Arcade', // required
+                    releaseYear: 1980 // not required
+                })
+                .expect(422)
+        });
+
+        it('returns a status code 422 if genre field is missing', () => {
+            return request(routes)
+                .post('games')
+                .send({
+                    name: 'Pacman',
+                    releaseYear: 1980 // not required
+                })
+                .expect(422)
+        });
+
         it('games array has length of 2', () => {
             return request(routes)
                 .post('/games')
