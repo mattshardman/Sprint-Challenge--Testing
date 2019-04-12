@@ -1,4 +1,5 @@
-const server = require('express')();
+const express = require('express')
+const server = express();
 const gameRoutes = require('../routes/gameRoutes');
 
 server.use(express.json());
