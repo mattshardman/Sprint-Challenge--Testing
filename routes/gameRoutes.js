@@ -41,6 +41,10 @@ routes.post('/games', (req, res) => {
     return res.status(201).json(games)
 });
 
-
+routes.delete('/games/:id', () => {
+    const { id } = req.params;
+    const newGamesArr = games.find((game) => game.id != id);
+    games = newGamesArr;
+});
 
 module.exports = routes;

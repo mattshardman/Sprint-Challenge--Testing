@@ -120,6 +120,19 @@ describe('test endpoints', () => {
     });
 
     describe('GET /games/:id', () => {
+        it('returns a 404 status if game is not found', () => {
+            games.push({
+                id: 1,
+                title: 'Pacman', 
+                genre: 'Arcade',
+                releaseYear: 1980
+            });
+            return request(routes)
+                .get('/games/2')
+                .expect(404)
+                .expect({ error: 'Game with id 2 not found' });
+        });
+
         it('returns a status code 200 when a game is found', () => {
             games.push({
                 id: 1,
@@ -146,18 +159,21 @@ describe('test endpoints', () => {
                     expect(response.body.title).toBe('Pacman');
                 });
         });
+    });
 
-        it('returns a 404 status if game is not found', () => {
+    describe('DELETE /games/:id', () => {
+        it('returns 404 if game not found', () => {
             games.push({
                 id: 1,
                 title: 'Pacman', 
                 genre: 'Arcade',
                 releaseYear: 1980
             });
+
             return request(routes)
-                .get('/games/2')
+                .delete('/games/2')
                 .expect(404)
                 .expect({ error: 'Game with id 2 not found' });
         });
-    })
+    });
 });
