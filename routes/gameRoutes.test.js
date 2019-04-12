@@ -77,7 +77,7 @@ describe('test endpoints', () => {
                 })
                 .expect(405)
                 .then((r) => {
-                    expect(r.body.length).toBe(1);
+                    expect(r.body).toEqual({ error: 'Title already exists in catalog' });
                 })
         });
     });
