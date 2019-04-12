@@ -1,6 +1,14 @@
 const request = require('supertest');
 const routes = require('../server/server');
-const games = require('../data');
+let games = require('../data');
+
+beforeEach(() => {
+    games = [{
+        title: 'Pacman', // required
+        genre: 'Arcade', // required
+        releaseYear: 1980 // not required
+    }];
+});
 
 describe('test endpoint', () => {
     it('returns a status code of 200', () => {
@@ -12,13 +20,7 @@ describe('test endpoint', () => {
 
 describe('test endpoints', () => {
     describe('POST /games endpoint', () => {
-        it('returns a status code 201', () => {
-            return request(routes)
-                .post('/games')
-                .expect(201);
-        });
-
-        it('games array has length of 3', () => {
+        it('games array has length of 2', () => {
             return request(routes)
                 .post('/games')
                 .send({
@@ -26,9 +28,20 @@ describe('test endpoints', () => {
                     genre: 'Arcade', // required
                     releaseYear: 1980 // not required
                 })
+                .expect(201)
+        });
+
+        it('games array has length of 2', () => {
+            return request(routes)
+                .post('/games')
+                .send({
+                    title: 'Pacman', // required
+                    genre: 'Arcade', // required
+                    releaseYear: 1980 // not required
+                })
+                .expect(201)
                 .then((r) => {
-                    expect(games.length).toBe(1);
-                    expect(r.length).toBe(1);
+                    expect(r.body.length).toBe(3);
                 })
         });
     });
