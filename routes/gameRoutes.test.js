@@ -175,5 +175,19 @@ describe('test endpoints', () => {
                 .expect(404)
                 .expect({ error: 'Game with id 2 not found' });
         });
+
+        it('returns 201 status, and empty array if game deleted', () => {
+            games.push({
+                id: 1,
+                title: 'Pacman', 
+                genre: 'Arcade',
+                releaseYear: 1980
+            });
+
+            return request(routes)
+                .delete('/games/1')
+                .expect(201)
+                .expect([]);
+        });
     });
 });
