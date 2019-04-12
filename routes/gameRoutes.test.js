@@ -56,14 +56,15 @@ describe('test endpoints', () => {
                     releaseYear: 1980
                 })
                 .expect(201)
-                .then((r) => {
-                    expect(r.body.length).toBe(1);
-                    expect(r.body[0].id).toBe(2);
+                .then((response) => {
+                    expect(response.body.length).toBe(1);
+                    expect(response.body[0].id).toBe(2);
                 })
         });
 
         it('returns a status code of 405 if title is not unique', () => {
             games.push({
+                id: 1,
                 title: 'Pacman', 
                 genre: 'Arcade',
                 releaseYear: 1980
@@ -77,8 +78,8 @@ describe('test endpoints', () => {
                     releaseYear: 1980
                 })
                 .expect(405)
-                .then((r) => {
-                    expect(r.body).toEqual({ error: 'Title already exists in catalog' });
+                .then((response) => {
+                    expect(response.body).toEqual({ error: 'Title already exists in catalog' });
                 })
         });
     });
@@ -98,11 +99,13 @@ describe('test endpoints', () => {
 
         it('returns an array of games', () => {
             games.push({
+                id: 1,
                 title: 'Pacman', // required
                 genre: 'Arcade', // required
                 releaseYear: 1980 // not required
             },
             {
+                id: 2,
                 title: 'Pong', // required
                 genre: 'Arcade', // required
                 releaseYear: 1972 // not required
@@ -110,9 +113,23 @@ describe('test endpoints', () => {
 
             return request(routes)
                 .get('/games')
-                .then(r => {
-                    expect(r.body.length).toBe(2)
+                .then(response => {
+                    expect(response.body.length).toBe(2)
                 });
         });
     });
+
+    describe('GET /games/:id', () => {
+        it('returns a status code 200 when a game is found', () => {
+            games.push({
+                id: 1,
+                title: 'Pacman', // required
+                genre: 'Arcade', // required
+                releaseYear: 1980 // not required
+            });
+            return request(routes)
+                .get('/games/1')
+                .expect(200);
+        });
+    })
 });
