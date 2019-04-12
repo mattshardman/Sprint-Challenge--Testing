@@ -3,11 +3,7 @@ const routes = require('../server/server');
 let games = require('../data');
 
 beforeEach(() => {
-    games = [{
-        title: 'Pacman', // required
-        genre: 'Arcade', // required
-        releaseYear: 1980 // not required
-    }];
+    games = [];
 });
 
 describe('test endpoint', () => {
@@ -61,8 +57,16 @@ describe('test endpoints', () => {
                 })
                 .expect(201)
                 .then((r) => {
-                    expect(r.body.length).toBe(3);
+                    expect(r.body.length).toBe(2);
                 })
         });
+    });
+
+    describe('GET /games endpoint', () => {
+        it('returns status 200', () => {
+            return request(routes)
+                .get('/games')
+                .expect(200);
+        })
     });
 });
