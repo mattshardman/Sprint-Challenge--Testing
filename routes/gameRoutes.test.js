@@ -100,15 +100,15 @@ describe('test endpoints', () => {
         it('returns an array of games', () => {
             games.push({
                 id: 1,
-                title: 'Pacman', // required
-                genre: 'Arcade', // required
-                releaseYear: 1980 // not required
+                title: 'Pacman', 
+                genre: 'Arcade', 
+                releaseYear: 1980 
             },
             {
                 id: 2,
-                title: 'Pong', // required
-                genre: 'Arcade', // required
-                releaseYear: 1972 // not required
+                title: 'Pong',
+                genre: 'Arcade',
+                releaseYear: 1972
             });
 
             return request(routes)
@@ -123,13 +123,41 @@ describe('test endpoints', () => {
         it('returns a status code 200 when a game is found', () => {
             games.push({
                 id: 1,
-                title: 'Pacman', // required
-                genre: 'Arcade', // required
-                releaseYear: 1980 // not required
+                title: 'Pacman',
+                genre: 'Arcade',
+                releaseYear: 1980 
             });
             return request(routes)
                 .get('/games/1')
                 .expect(200);
+        });
+
+        it('returns a single game object when a game is found', () => {
+            games.push({
+                id: 1,
+                title: 'Pacman', 
+                genre: 'Arcade', 
+                releaseYear: 1980
+            });
+            return request(routes)
+                .get('/games/1')
+                .then(response => {
+                    expect(response.body.id).toBe(1);
+                    expect(response.body.title).toBe('Pacman');
+                });
+        });
+
+        it('returns a 404 status if game is not found', () => {
+            games.push({
+                id: 1,
+                title: 'Pacman', 
+                genre: 'Arcade',
+                releaseYear: 1980
+            });
+            return request(routes)
+                .get('/games/2')
+                .expect(404)
+                .expect({ error: 'Game with id 2 not found' });
         });
     })
 });
