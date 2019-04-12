@@ -20,8 +20,8 @@ describe('test endpoints', () => {
             return request(routes)
                 .post('/games')
                 .send({
-                    genre: 'Arcade', // required
-                    releaseYear: 1980 // not required
+                    genre: 'Arcade',
+                    releaseYear: 1980 
                 })
                 .expect(422)
         });
@@ -31,7 +31,7 @@ describe('test endpoints', () => {
                 .post('/games')
                 .send({
                     name: 'Pacman',
-                    releaseYear: 1980 // not required
+                    releaseYear: 1980
                 })
                 .expect(422)
         });
@@ -40,9 +40,9 @@ describe('test endpoints', () => {
             return request(routes)
                 .post('/games')
                 .send({
-                    title: 'Pacman', // required
-                    genre: 'Arcade', // required
-                    releaseYear: 1980 // not required
+                    title: 'Pacman',
+                    genre: 'Arcade', 
+                    releaseYear: 1980
                 })
                 .expect(201)
         });
@@ -51,11 +51,31 @@ describe('test endpoints', () => {
             return request(routes)
                 .post('/games')
                 .send({
-                    title: 'Pacman', // required
-                    genre: 'Arcade', // required
-                    releaseYear: 1980 // not required
+                    title: 'Pacman',
+                    genre: 'Arcade',
+                    releaseYear: 1980
                 })
                 .expect(201)
+                .then((r) => {
+                    expect(r.body.length).toBe(1);
+                })
+        });
+
+        it('returns a status code of 405 if title is not unique', () => {
+            games.push({
+                title: 'Pacman', 
+                genre: 'Arcade',
+                releaseYear: 1980
+            });
+
+            return request(routes)
+                .post('/games')
+                .send({
+                    title: 'Pacman',
+                    genre: 'Arcade',
+                    releaseYear: 1980
+                })
+                .expect(405)
                 .then((r) => {
                     expect(r.body.length).toBe(1);
                 })
